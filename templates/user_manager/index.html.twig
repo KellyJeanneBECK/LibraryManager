@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Manager{% endblock %}
+
+{% block body %}
+
+<section class="container">
+    <h1>User Manager</h1>
+    {% include 'layouts/_flash_messages.html.twig' %}
+    <table class="table">
+        <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName|upper }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.telephone }}</td>
+                <td>
+                    {% if ('ROLE_ADMIN' in user.roles) %}
+                        <span>Admin</span>
+                    {% else %}
+                        <span>Abonné</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if ('ROLE_ADMIN' in user.roles === false) %}
+                        <a onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">Supprimer</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}
