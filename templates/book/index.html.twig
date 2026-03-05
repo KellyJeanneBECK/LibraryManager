@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <h1>Liste des livres</h1>
+        {% include 'layouts/_flash_messages.html.twig' %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Isbn</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.stock }}</td>
+                    <td>
+                        <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-outline-dark">Afficher</a>
+                        <a href="{{ path('app_book_edit', {'id': book.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_book_new') }}" class="btn btn-dark">Ajouter un nouveau livre</a>
+    </section>
+{% endblock %}

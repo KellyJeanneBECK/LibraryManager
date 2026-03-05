@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    <label for="">Titre</label>
+    {{ form_widget(form.title, {attr:{'class': 'form form-control'}}) }}
+    <label for="">Auteur</label>
+    {{ form_widget(form.author, {attr:{'class': 'form form-control'}}) }}
+    <label for="">isbn</label>
+    {{ form_widget(form.isbn, {attr:{'class': 'form form-control'}}) }}
+    <label for="">Stock</label>
+    {{ form_widget(form.stock, {attr:{'class': 'form form-control'}}) }}
+    <button class="btn btn-dark mt-4">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form) }}
