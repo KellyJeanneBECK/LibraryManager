@@ -5,6 +5,26 @@
 {% block body %}
 
 <section class="container">
-    <h1>Welcome</h1>
+    <h1>Bienvenue à la bibliothèque</h1>
+    <article>
+        <h2>Liste des livres</h2>
+        <div class="d-flex justify-content-between flex-md-wrap gap-4">
+            {% for book in books %}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">"{{ book.title }}"</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.isbn }}</h6>
+                        {% if (book.stock > 0) %}
+                            <p class="card-text">{{ book.stock }} disponible(s)</p>
+                        {% else %}
+                            <p class="card-text">Indisponible</p>
+                        {% endif %}
+                        <a href="{{ path('app_borrow') }}" class="btn btn-dark">Emprunter</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
 </section>
 {% endblock %}
