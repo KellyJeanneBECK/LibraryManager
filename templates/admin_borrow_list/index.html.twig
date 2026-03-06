@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Borrow List{% endblock %}
+
+{% block body %}
+<section class="container">
+    <h1>Liste des emprunts en cours</h1>
+    <table class="table">
+        <tr>
+            <th>Livre</th>
+            <th>Date d'emprunt</th>
+            <th>Utilisateur</th>
+            <th>Email utilisateur</th>
+        </tr>
+        {% for borrowedBook in borrowedBooks %}
+            <tr>
+                <td>{{ borrowedBook.book.title }}</td>
+                <td>{{ borrowedBook.borrowDate|date('d-m-Y H:i:s') }}</td>
+                <td>{{ borrowedBook.user.firstName}} {{ borrowedBook.user.lastName|upper}}</td>
+                <td>{{ borrowedBook.user.email }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun emprunt en cours</td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}
