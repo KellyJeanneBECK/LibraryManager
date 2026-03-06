@@ -7,6 +7,7 @@ use App\Entity\BookHistory;
 use App\Form\BookHistoryType;
 use App\Form\BookType;
 use App\Form\BookUpdateType;
+use App\Repository\BookHistoryRepository;
 use App\Repository\BookRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -126,5 +127,17 @@ final class BookController extends AbstractController
             ['form' => $form->createView(),
             'book' => $book]
         );
+    }
+
+    #[Route('/add/stock/{id}/history', name:'app_book_stock_history', methods:['GET'])]
+    public function showProductHistory($id, BookRepository $bookRepository, BookHistoryRepository $bookHistoryRepository): Response
+    {
+        $book = $bookRepository->find($id);
+        $bookHistory = $bookHistoryRepository->findBy(['book'=>$book],['id'=>'DESC']);
+
+        return $this->render('book/showBookHistory.html.twig', [
+            'book'=>$book,
+            'bookHistories'=>$bookHistory
+        ]);
     }
 }

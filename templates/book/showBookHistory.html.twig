@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book History{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <h1>Historique : "{{ book.title }}"</h1>
+        <table class="table">
+            <tr>
+                <th>Quantité ajoutés</th>
+                <th>Date</th>
+            </tr>
+            {% for bookHistory in bookHistories %}
+            <tr>
+                <td>{{ bookHistory.quantity }}</td>
+                <td>{{ bookHistory.createdAt|date }}</td>
+            </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">aucun historique</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ path('app_book_index') }}" class="btn btn-outline-dark">Retour à la liste</a>
+        <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-outline-dark">Retour au livre</a>
+        <a href="{{ path('app_book_add_stock', {'id': book.id}) }}" class="btn btn-dark">Ajouter du stock</a>
+    </section>
+{% endblock %}
