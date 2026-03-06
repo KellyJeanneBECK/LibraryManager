@@ -54,4 +54,16 @@ final class BorrowController extends AbstractController
             'borrows' => $borrowList
         ]);
     }
+
+    #[Route('/return/{id}', name: 'app_borrow_return')]
+    public function returnBook(EntityManagerInterface $entMan, Borrow $borrow): Response
+    {
+        $borrow->setReturnDate(new DateTimeImmutable());
+        $borrow->setStatus('rendu');
+        $entMan->flush();
+
+        $this->addFlash('success', "Vous avez rendu le livre");
+        
+        return $this->redirectToRoute('app_borrow_user_list', [], Response::HTTP_SEE_OTHER);
+    }
 }

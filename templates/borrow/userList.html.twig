@@ -32,7 +32,7 @@
                 {% endif %}
                 <td>
                     {% if borrow.status == "en_cours" %}
-                        <a href="" class="btn btn-dark">Rendre</a>
+                        <a href="{{ path('app_borrow_return', {'id': borrow.book.id}) }}" class="btn btn-dark">Rendre</a>
                     {% else %}
                     {% endif %}
                 </td>
