@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Borrow;
 use App\Form\BorrowType;
+use App\Repository\BookRepository;
 use App\Repository\BorrowRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,21 +27,28 @@ final class BorrowController extends AbstractController
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $borrowBook->setBorrowDate(new DateTimeImmutable());
-            $borrowBook->setStatus('en_cours');
-            $borrowBook->setUser($user);
+            if($borrowBook->getBook()->getStock()<1) {
+                $this->addFlash('danger', "Aucun livre en stock");
+                return $this->redirectToRoute('app_borrow', [], Response::HTTP_SEE_OTHER);
+            } else {
+                $updateStock = $borrowBook->getBook()->getStock() - 1;
+                $borrowBook->getBook()->setStock($updateStock);
+                $borrowBook->setBorrowDate(new DateTimeImmutable());
+                $borrowBook->setStatus('en_cours');
+                $borrowBook->setUser($user);
 
-            $entMan->persist($borrowBook);
-            $entMan->flush();
+                $entMan->persist($borrowBook);
+                $entMan->flush();
 
-            $this->addFlash('success', "Le livre a été ajouté à ma liste d'emprunt");
+                $this->addFlash('success', "Le livre a été ajouté à ma liste d'emprunt");
 
-            return $this->redirectToRoute('app_borrow_user_list', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_borrow_user_list', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('borrow/index.html.twig', [
             'borrow_book' => $borrowBook,
-            'form' => $form
+            'form' => $form,
         ]);
     }
 
@@ -48,7 +56,7 @@ final class BorrowController extends AbstractController
     public function showBorrowList(BorrowRepository $borrowRepository): Response
     {
         $user = $this->getUser();
-        $borrowList = $borrowRepository->findBy(['user'=>$user],['status'=>'DESC']);
+        $borrowList = $borrowRepository->findBy(['user'=>$user],['status'=>'ASC']);
 
         return $this->render('borrow/userList.html.twig', [
             'borrows' => $borrowList
@@ -56,8 +64,17 @@ final class BorrowController extends AbstractController
     }
 
     #[Route('/return/{id}', name: 'app_borrow_return')]
-    public function returnBook(EntityManagerInterface $entMan, Borrow $borrow): Response
+    public function returnBook(EntityManagerInterface $entMan, Borrow $borrow, BookRepository $bookRepository, $id): Response
     {
+        // $book = $bookRepository->find($id);
+        // $updateStock = $book->getStock() + 1;
+        // $book->setStock($updateStock);
+
+        // $updateStock = $borrowBook->getBook()->getStock() - 1;
+        // $borrowBook->getBook()->setStock($updateStock);
+        $updateStock = $borrow->getBook()->getStock() + 1;
+        $borrow->getBook()->setStock($updateStock);
+
         $borrow->setReturnDate(new DateTimeImmutable());
         $borrow->setStatus('rendu');
         $entMan->flush();

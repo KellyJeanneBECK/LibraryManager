@@ -21,7 +21,7 @@
                 </tr>
             {% endfor %}
         </table>
-        <a href="{{ path('app_book_index') }}" class="btn btn-outline-dark">Retour à la liste</a>
+        <a href="{{ path('app_book_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
         <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-outline-dark">Retour au livre</a>
         <a href="{{ path('app_book_add_stock', {'id': book.id}) }}" class="btn btn-dark">Ajouter du stock</a>
     </section>
