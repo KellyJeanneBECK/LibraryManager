@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Borrow;
 use App\Form\BorrowType;
+use App\Repository\BorrowRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,11 +32,26 @@ final class BorrowController extends AbstractController
 
             $entMan->persist($borrowBook);
             $entMan->flush();
+
+            $this->addFlash('success', "Le livre a été ajouté à ma liste d'emprunt");
+
+            return $this->redirectToRoute('app_borrow_user_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('borrow/index.html.twig', [
             'borrow_book' => $borrowBook,
             'form' => $form
+        ]);
+    }
+
+    #[Route('/user/list', name: 'app_borrow_user_list')]
+    public function showBorrowList(BorrowRepository $borrowRepository): Response
+    {
+        $user = $this->getUser();
+        $borrowList = $borrowRepository->findBy(['user'=>$user],['status'=>'DESC']);
+
+        return $this->render('borrow/userList.html.twig', [
+            'borrows' => $borrowList
         ]);
     }
 }

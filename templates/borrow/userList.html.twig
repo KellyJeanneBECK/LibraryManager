@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Borrow Book{% endblock %}
+
+{% block body %}
+<section class="container">
+    <h1>Liste des emprunts</h1>
+    {% include 'layouts/_flash_messages.html.twig' %}
+    <table class="table">
+        <tr>
+            <th>Livre</th>
+            <th>Statut</th>
+            <th>Date d'emprunt</th>
+            <th>Date de retour</th>
+            <th>Action</th>
+        </tr>
+        {% for borrow in borrows %}
+            <tr>
+                <td>{{ borrow.book.title }}</td>
+                <td>
+                    {% if borrow.status == "en_cours" %}
+                        <span class="badge text-bg-secondary">{{ borrow.status }}</span>
+                    {% else %}
+                        <span class="badge text-bg-success">{{ borrow.status }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ borrow.borrowDate|date('d-m-Y H:i:s') }}</td>
+                {% if borrow.returnDate is empty %}
+                    <td>Pas encore rendu</td>
+                {% else %}
+                    <td>{{ borrow.returnDate|date('d-m-Y H:i:s') }}</td>
+                {% endif %}
+                <td>
+                    {% if borrow.status == "en_cours" %}
+                        <a href="" class="btn btn-dark">Rendre</a>
+                    {% else %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun livre n'a été emprunté</td>
+            </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}
