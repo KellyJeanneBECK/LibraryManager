@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Borrow;
 use App\Form\BorrowType;
-use App\Repository\BookRepository;
 use App\Repository\BorrowRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,14 +63,8 @@ final class BorrowController extends AbstractController
     }
 
     #[Route('/return/{id}', name: 'app_borrow_return')]
-    public function returnBook(EntityManagerInterface $entMan, Borrow $borrow, BookRepository $bookRepository, $id): Response
+    public function returnBook(EntityManagerInterface $entMan, Borrow $borrow): Response
     {
-        // $book = $bookRepository->find($id);
-        // $updateStock = $book->getStock() + 1;
-        // $book->setStock($updateStock);
-
-        // $updateStock = $borrowBook->getBook()->getStock() - 1;
-        // $borrowBook->getBook()->setStock($updateStock);
         $updateStock = $borrow->getBook()->getStock() + 1;
         $borrow->getBook()->setStock($updateStock);
 
