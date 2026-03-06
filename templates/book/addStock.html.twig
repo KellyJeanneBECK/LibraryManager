@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Stock{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <h1>Ajouter du stock pour "{{ book.title }}"</h1>
+
+        {% include 'layouts/_flash_messages.html.twig' %}
+
+        {{ form_start(form) }}
+            <label for="">Quantité à ajouter</label>
+            {{ form_widget(form.quantity, {'attr':{'class':'form form-control mb-3', 'placeholder': book.stock }}) }}
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        {{ form_end(form) }}
+        <a href="{{ path('app_book_index') }}" class="btn btn-outline-primary mt-2">Retour à la liste</a>
+        {# <a href="{{ path('app_book_stock_history', {'id': book.id}) }}" class="btn btn-outline-primary mt-2">Retour à l'historique du produit</a> #}
+    </section>
+{% endblock %}

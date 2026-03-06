@@ -28,6 +28,7 @@
                     <td>
                         <a href="{{ path('app_book_show', {'id': book.id}) }}" class="btn btn-outline-dark">Afficher</a>
                         <a href="{{ path('app_book_edit', {'id': book.id}) }}" class="btn btn-outline-secondary">Modifier</a>
+                        <a href="{{ path('app_book_add_stock', {'id': book.id}) }}" class="btn btn-outline-warning">Ajouter du stock</a>
                     </td>
                 </tr>
             {% else %}

@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\BookHistory;
+use App\Form\BookHistoryType;
 use App\Form\BookType;
+use App\Form\BookUpdateType;
 use App\Repository\BookRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +36,11 @@ final class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $stockHistory = new BookHistory();
+            $stockHistory->setBook($book);
+            $stockHistory->setQuantity($book->getStock());
+            $stockHistory->setCreatedAt(new DateTimeImmutable());
+            $entityManager->persist($stockHistory);
             $entityManager->persist($book);
             $entityManager->flush();
 
@@ -57,7 +66,7 @@ final class BookController extends AbstractController
     #[Route('/{id}/edit', name: 'app_book_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookUpdateType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,5 +94,37 @@ final class BookController extends AbstractController
         }
 
         return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/add/stock/{id}', name: 'app_book_add_stock')]
+    public function addStock($id, EntityManagerInterface $entMan, Request $request, BookRepository $bookRepository): Response
+    {
+        $addStock = new BookHistory();
+        $form = $this->createForm(BookHistoryType::class, $addStock);
+        $form->handleRequest($request);
+
+        $book = $bookRepository->find($id);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            if($addStock->getQuantity()>0) {
+                $newStock = $book->getStock() + $addStock->getQuantity();
+                $book->setStock($newStock);
+                $addStock->setCreatedAt(new DateTimeImmutable());
+                $addStock->setBook($book);
+
+                $entMan->persist($addStock);
+                $entMan->flush();
+
+                $this->addFlash('success', "Le nouveau stock a été ajouté");
+                return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
+            } else {
+                $this->addFlash('danger', "Le nouveau stock ne devrait pas être inférieur à 0");
+                return $this->redirectToRoute('app_book_add_stock', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+        return $this->render('book/addStock.html.twig',
+            ['form' => $form->createView(),
+            'book' => $book]
+        );
     }
 }

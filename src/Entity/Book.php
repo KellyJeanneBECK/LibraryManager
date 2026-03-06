@@ -33,9 +33,16 @@ class Book
     #[ORM\OneToMany(targetEntity: Borrow::class, mappedBy: 'book')]
     private Collection $borrow;
 
+    /**
+     * @var Collection<int, BookHistory>
+     */
+    #[ORM\OneToMany(targetEntity: BookHistory::class, mappedBy: 'book')]
+    private Collection $bookHistories;
+
     public function __construct()
     {
         $this->borrow = new ArrayCollection();
+        $this->bookHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,6 +122,36 @@ class Book
             // set the owning side to null (unless already changed)
             if ($borrow->getBook() === $this) {
                 $borrow->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BookHistory>
+     */
+    public function getBookHistories(): Collection
+    {
+        return $this->bookHistories;
+    }
+
+    public function addBookHistory(BookHistory $bookHistory): static
+    {
+        if (!$this->bookHistories->contains($bookHistory)) {
+            $this->bookHistories->add($bookHistory);
+            $bookHistory->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookHistory(BookHistory $bookHistory): static
+    {
+        if ($this->bookHistories->removeElement($bookHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($bookHistory->getBook() === $this) {
+                $bookHistory->setBook(null);
             }
         }
 

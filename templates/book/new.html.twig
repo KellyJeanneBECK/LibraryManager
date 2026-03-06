@@ -6,7 +6,7 @@
     <section class="container">
         <h1>Ajouter un nouveau livre</h1>
 
-        {{ include('book/_form.html.twig') }}
+        {{ include('book/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
         <a href="{{ path('app_book_index') }}" class="btn btn-secondary mt-2">Retour à la liste</a>
     </section>

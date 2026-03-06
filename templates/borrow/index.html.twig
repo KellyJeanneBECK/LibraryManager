@@ -5,6 +5,7 @@
 {% block body %}
 <section class="container">
     <h1>Emprunter un livre</h1>
+    {% include 'layouts/_flash_messages.html.twig' %}
     {{ form_start(form) }}
         <label for="">Livre</label>
         {{ form_widget(form.book, {attr:{'class': 'form form-control'}}) }}
