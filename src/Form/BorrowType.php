@@ -16,7 +16,10 @@ class BorrowType extends AbstractType
         $builder
             ->add('book', EntityType::class, [
                 'class' => Book::class,
-                'choice_label' => 'title',
+                // 'choice_label' => 'title',
+                'choice_label' => function (Book $book) {
+                    return '"'.$book->getTitle().'" : '.$book->getStock().' disponible(s)';
+                },
             ])
         ;
     }
