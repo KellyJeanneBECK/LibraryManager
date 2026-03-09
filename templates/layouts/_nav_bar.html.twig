@@ -1,14 +1,11 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('app_home') }}">Home</a>
+    <a class="navbar-brand" href="{{ path('app_home') }}">Catalogue</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('app_borrow') }}">Emprunter</a>
-        </li>
         {% if app.user %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_borrow_user_list') }}">Mes emprunts</a>

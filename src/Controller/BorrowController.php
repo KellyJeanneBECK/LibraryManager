@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use App\Entity\Borrow;
 use App\Form\BorrowType;
 use App\Repository\BorrowRepository;
@@ -17,22 +18,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 final class BorrowController extends AbstractController
 {
-    #[Route(name: 'app_borrow')]
-    public function index(Request $request, EntityManagerInterface $entMan, BorrowRepository $borrowRepository): Response
+    #[Route('/{id}', name: 'app_borrow')]
+    public function index(int $id, Request $request, EntityManagerInterface $entMan, BorrowRepository $borrowRepository, Book $book): Response
     {
         $borrowBook = new Borrow();
+        $borrowBook->setBook($book);
         $form = $this->createForm(BorrowType::class, $borrowBook);
         $form->handleRequest($request);
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $bookId = $borrowBook->getBook();
+
             if($borrowBook->getBook()->getStock()<1) {
                 $this->addFlash('danger', "Aucun livre en stock");
-                return $this->redirectToRoute('app_borrow', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_borrow', ['id'=>$id], Response::HTTP_SEE_OTHER);
+
             } else if ($borrowRepository->findBy(['user'=>$user, 'book'=>$bookId, 'status'=>"en_cours"])) {
                 $this->addFlash('danger', "Vous avez déjà emprunté ce livre");
-                return $this->redirectToRoute('app_borrow', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_borrow', ['id'=>$id], Response::HTTP_SEE_OTHER);
+                
             } else {
                 $updateStock = $borrowBook->getBook()->getStock() - 1;
                 $borrowBook->getBook()->setStock($updateStock);

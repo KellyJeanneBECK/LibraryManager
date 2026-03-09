@@ -20,7 +20,7 @@
                         {% else %}
                             <p class="card-text">Indisponible</p>
                         {% endif %}
-                        <a href="{{ path('app_borrow') }}" class="btn btn-dark">Emprunter</a>
+                        <a href="{{ path('app_borrow', {'id': book.id}) }}" class="btn btn-dark">Emprunter</a>
                     </div>
                 </div>
             {% endfor %}
