@@ -18,8 +18,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 final class BorrowController extends AbstractController
 {
-    #[Route('/{id}', name: 'app_borrow')]
-    public function index(int $id, Request $request, EntityManagerInterface $entMan, BorrowRepository $borrowRepository, Book $book): Response
+    #[Route('/{id}', name: 'app_borrow', defaults: ['id' => null], requirements: ['id' => '\d+'])]
+    public function index(?int $id, Request $request, EntityManagerInterface $entMan, BorrowRepository $borrowRepository, ?Book $book): Response
     {
         $borrowBook = new Borrow();
         $borrowBook->setBook($book);

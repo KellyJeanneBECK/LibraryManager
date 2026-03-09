@@ -19,7 +19,6 @@ class BorrowType extends AbstractType
                 'choice_label' => function (Book $book) {
                     return '"'.$book->getTitle().'" : '.$book->getStock().' disponible(s)';
                 },
-                'disabled' => true,
             ])
         ;
     }
