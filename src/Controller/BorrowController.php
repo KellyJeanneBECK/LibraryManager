@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class BorrowController extends AbstractController
 {
     #[Route(name: 'app_borrow')]
-    public function index(Request $request, EntityManagerInterface $entMan): Response
+    public function index(Request $request, EntityManagerInterface $entMan, BorrowRepository $borrowRepository): Response
     {
         $borrowBook = new Borrow();
         $form = $this->createForm(BorrowType::class, $borrowBook);
@@ -26,8 +26,12 @@ final class BorrowController extends AbstractController
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $bookId = $borrowBook->getBook();
             if($borrowBook->getBook()->getStock()<1) {
                 $this->addFlash('danger', "Aucun livre en stock");
+                return $this->redirectToRoute('app_borrow', [], Response::HTTP_SEE_OTHER);
+            } else if ($borrowRepository->findBy(['user'=>$user, 'book'=>$bookId, 'status'=>"en_cours"])) {
+                $this->addFlash('danger', "Vous avez déjà emprunté ce livre");
                 return $this->redirectToRoute('app_borrow', [], Response::HTTP_SEE_OTHER);
             } else {
                 $updateStock = $borrowBook->getBook()->getStock() - 1;
