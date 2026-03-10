@@ -11,16 +11,20 @@
         <div class="d-flex justify-content-between flex-md-wrap gap-4">
             {% for book in books %}
                 <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">"{{ book.title }}"</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.isbn }}</h6>
-                        {% if (book.stock > 0) %}
-                            <p class="card-text">{{ book.stock }} disponible(s)</p>
-                            <a href="{{ path('app_borrow', {'id': book.id}) }}" class="btn btn-dark">Emprunter</a>
-                        {% else %}
-                            <p class="card-text text-danger">Indisponible</p>
-                        {% endif %}
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title">"{{ book.title }}"</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.isbn }}</h6>
+                        </div>
+                        <div>
+                            {% if (book.stock > 0) %}
+                                <p class="card-text">{{ book.stock }} disponible(s)</p>
+                                <a href="{{ path('app_borrow', {'id': book.id}) }}" class="btn btn-dark">Emprunter</a>
+                            {% else %}
+                                <p class="card-text text-danger">Indisponible</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}
