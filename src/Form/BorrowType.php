@@ -20,6 +20,7 @@ class BorrowType extends AbstractType
                     return '"'.$book->getTitle().'" : '.$book->getStock().' disponible(s)';
                 },
             ])
+            ->add('returnDate')
         ;
     }
 

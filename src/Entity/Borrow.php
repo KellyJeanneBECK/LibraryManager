@@ -13,10 +13,10 @@ class Borrow
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     private ?\DateTimeImmutable $borrowDate = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     private ?\DateTimeImmutable $returnDate = null;
 
     #[ORM\Column(length: 25, options: ['deafult' => 'in_session'])]
@@ -93,5 +93,16 @@ class Borrow
         $this->user = $user;
 
         return $this;
+    }
+
+    // this function is to display a late status in twig template if the return date is expired
+    // this doesn't update the status in the database
+    public function getLateStatus(): string
+    {
+        if ($this->status != 'rendu' && $this->returnDate < new \DateTimeImmutable()) {
+            return 'en_retard';
+        }
+
+        return $this->status;
     }
 }

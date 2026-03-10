@@ -64,7 +64,7 @@ final class BorrowController extends AbstractController
     public function showBorrowList(BorrowRepository $borrowRepository): Response
     {
         $user = $this->getUser();
-        $borrowList = $borrowRepository->findBy(['user'=>$user],['status'=>'ASC']);
+        $borrowList = $borrowRepository->findBy(['user'=>$user],['status'=>'ASC', 'book'=>'ASC']);
 
         return $this->render('borrow/userList.html.twig', [
             'borrows' => $borrowList
@@ -77,7 +77,6 @@ final class BorrowController extends AbstractController
         $updateStock = $borrow->getBook()->getStock() + 1;
         $borrow->getBook()->setStock($updateStock);
 
-        $borrow->setReturnDate(new DateTimeImmutable());
         $borrow->setStatus('rendu');
         $entMan->flush();
 

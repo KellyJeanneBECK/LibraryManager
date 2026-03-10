@@ -8,20 +8,37 @@
     <table class="table">
         <tr>
             <th>Livre</th>
+            <th>Statut</th>
             <th>Date d'emprunt</th>
+            <th>Date de retour</th>
             <th>Utilisateur</th>
             <th>Email utilisateur</th>
+            <th>Tel utilisateur</th>
         </tr>
         {% for borrowedBook in borrowedBooks %}
             <tr>
                 <td>{{ borrowedBook.book.title }}</td>
+                <td>
+                    {# Will change the status to "en_retard" on twig template only #}
+                    {# The lateStatus function comes form Borrow Entity #}
+                    {% set status = borrowedBook.lateStatus %}
+                    <span class= "badge {{ status == 'en_retard' ? 'text-bg-warning' : 'text-bg-secondary' }}">{{ status }}</span>
+                </td>
                 <td>{{ borrowedBook.borrowDate|date('d-m-Y H:i:s') }}</td>
+                <td>{{ borrowedBook.returnDate|date('d-m-Y H:i:s') }}</td>
                 <td>{{ borrowedBook.user.firstName}} {{ borrowedBook.user.lastName|upper}}</td>
                 <td>{{ borrowedBook.user.email }}</td>
+                <td>
+                    {% if borrowedBook.user.telephone is empty %}
+                        <span>/</span>
+                    {% else %}
+                        <span>{{ borrowedBook.user.telephone }}</span>
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">Aucun emprunt en cours</td>
+                <td colspan="7">Aucun emprunt en cours</td>
             </tr>
         {% endfor %}
     </table>

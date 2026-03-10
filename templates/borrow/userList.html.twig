@@ -18,15 +18,18 @@
             <tr>
                 <td>{{ borrow.book.title }}</td>
                 <td>
+                    {# Will change the status to "en_retard" on twig template only #}
+                    {# The lateStatus function comes form Borrow Entity #}
+                    {% set status = borrow.lateStatus %}
                     {% if borrow.status == "en_cours" %}
-                        <span class="badge text-bg-secondary">{{ borrow.status }}</span>
+                        <span class="badge {{ status == 'en_retard' ? 'text-bg-warning' : 'text-bg-secondary' }}">{{ status }}</span>
                     {% else %}
-                        <span class="badge text-bg-success">{{ borrow.status }}</span>
+                        <span class="badge text-bg-success">{{ status }}</span>
                     {% endif %}
                 </td>
                 <td>{{ borrow.borrowDate|date('d-m-Y H:i:s') }}</td>
                 {% if borrow.returnDate is empty %}
-                    <td>Pas encore rendu</td>
+                    <td>/</td>
                 {% else %}
                     <td>{{ borrow.returnDate|date('d-m-Y H:i:s') }}</td>
                 {% endif %}
