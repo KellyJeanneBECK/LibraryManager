@@ -35,7 +35,7 @@
                 {% endif %}
                 <td>
                     {% if borrow.status == "en_cours" %}
-                        <a href="{{ path('app_borrow_return', {'id': borrow.id}) }}" class="btn btn-dark">Rendre</a>
+                        <a onclick="return confirm('Voulez-vous rendre le livre ?')" href="{{ path('app_borrow_return', {'id': borrow.id}) }}" class="btn btn-dark">Rendre</a>
                     {% else %}
                     {% endif %}
                 </td>
