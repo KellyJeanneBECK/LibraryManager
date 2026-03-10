@@ -9,8 +9,8 @@
     {{ form_start(form) }}
         <label for="">Livre</label>
         {{ form_widget(form.book, {attr:{'class': 'form form-control'}}) }}
-        <label for="">Date de retour</label>
-        {{ form_widget(form.returnDate, {attr:{'class': 'form form-control'}}) }}
+        <label for="">Durée d'emprunt</label>
+        {{ form_widget(form.duration, {attr:{'class': 'form form-control'}}) }}
         <button type="submit" class="btn btn-dark d-block mt-4">Emprunter</button>
     {{ form_end(form) }}
     <a href="{{ path('app_home') }}" class="btn btn-outline-dark mt-2">Retour au catalogue</a>

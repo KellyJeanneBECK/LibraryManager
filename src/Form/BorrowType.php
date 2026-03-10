@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +29,15 @@ class BorrowType extends AbstractType
                     return '"'.$book->getTitle().'" : '.$book->getStock().' disponible(s)';
                 },
             ])
-            ->add('returnDate')
+            ->add('duration', ChoiceType::class, [
+                'placeholder' => "Selectionnez une durée",
+                'choices' => [
+                    "2 semaines" => 2,
+                    "3 semaines" => 3,
+                    "4 semaines" => 4,
+                ],
+                'mapped' => false, // 'duration' is not a property of Borrow Entity
+            ])
         ;
     }
 

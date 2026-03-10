@@ -39,9 +39,14 @@ final class BorrowController extends AbstractController
                 return $this->redirectToRoute('app_borrow', ['id'=>$id], Response::HTTP_SEE_OTHER);
                 
             } else {
+                
+                $weeks = $form->get('duration')->getData();
+                $newReturnDate = new DateTimeImmutable("+{$weeks} weeks");
+                
                 $updateStock = $borrowBook->getBook()->getStock() - 1;
                 $borrowBook->getBook()->setStock($updateStock);
                 $borrowBook->setBorrowDate(new DateTimeImmutable());
+                $borrowBook->setReturnDate($newReturnDate);
                 $borrowBook->setStatus('en_cours');
                 $borrowBook->setUser($user);
 
