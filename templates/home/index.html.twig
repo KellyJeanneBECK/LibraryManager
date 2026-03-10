@@ -17,10 +17,10 @@
                         <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.isbn }}</h6>
                         {% if (book.stock > 0) %}
                             <p class="card-text">{{ book.stock }} disponible(s)</p>
+                            <a href="{{ path('app_borrow', {'id': book.id}) }}" class="btn btn-dark">Emprunter</a>
                         {% else %}
-                            <p class="card-text">Indisponible</p>
+                            <p class="card-text text-danger">Indisponible</p>
                         {% endif %}
-                        <a href="{{ path('app_borrow', {'id': book.id}) }}" class="btn btn-dark">Emprunter</a>
                     </div>
                 </div>
             {% endfor %}
