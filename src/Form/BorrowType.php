@@ -18,6 +18,7 @@ class BorrowType extends AbstractType
     {
         $builder
             ->add('book', EntityType::class, [
+                'placeholder' => "Selectionnez un livre",
                 'class' => Book::class,
                 // query_builder to sort books alphabetically and exclude the ones with no stock
                 'query_builder' => function (EntityRepository $entRepo): QueryBuilder {
