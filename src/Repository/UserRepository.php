@@ -57,4 +57,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findAllCurrentBorrowCount()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u as user')
+            ->addSelect('COUNT(b.id) as borrowCount')
+            ->leftJoin('u.borrow', 'b', 'WITH', 'b.status = :status')
+            ->setParameter('status', 'en_cours')
+            ->groupBy('u.id')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -9,29 +9,31 @@
     {% include 'layouts/_flash_messages.html.twig' %}
     <table class="table">
         <tr>
-            <th>Prénom</th>
             <th>Nom</th>
+            <th>Emprunts en cours</th>
             <th>Email</th>
             <th>Téléphone</th>
             <th>Role</th>
             <th>Action</th>
         </tr>
-        {% for user in users %}
+        {% for account in users %}
             <tr>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName|upper }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.telephone }}</td>
+                {# account.user = User entity object #}
+                {# account.borrowCount is a COUNT() alias setup in findAllCurrentBorrowCount() public function in UserRepository.php #}
+                <td>{{ account.user.firstName }} {{ account.user.lastName|upper }}</td>
+                <td>{{ account.borrowCount }}</td>
+                <td>{{ account.user.email }}</td>
+                <td>{{ account.user.telephone }}</td>
                 <td>
-                    {% if ('ROLE_ADMIN' in user.roles) %}
+                    {% if ('ROLE_ADMIN' in account.user.roles) %}
                         <span>Admin</span>
                     {% else %}
                         <span>Abonné</span>
                     {% endif %}
                 </td>
                 <td>
-                    {% if ('ROLE_ADMIN' in user.roles === false) %}
-                        <a onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" href="{{ path('app_user_delete', {'id': user.id}) }}" class="btn btn-danger">Supprimer</a>
+                    {% if ('ROLE_ADMIN' in account.user.roles === false) %}
+                        <a onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" href="{{ path('app_user_delete', {'id': account.user.id}) }}" class="btn btn-danger">Supprimer</a>
                     {% endif %}
                 </td>
             </tr>

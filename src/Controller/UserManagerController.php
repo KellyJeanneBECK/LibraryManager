@@ -18,7 +18,8 @@ final class UserManagerController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user_manager/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->findAllCurrentBorrowCount(),
+            // findAllCurrentBorrowCount() is a custom method created in Userrepository.php
         ]);
     }
 
