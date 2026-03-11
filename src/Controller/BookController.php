@@ -88,6 +88,9 @@ final class BookController extends AbstractController
     public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->getPayload()->getString('_token'))) {
+            foreach ($book->getBorrow() as $borrow) {
+                $entityManager->remove($borrow);
+            }
             $entityManager->remove($book);
             $entityManager->flush();
 
@@ -133,6 +136,7 @@ final class BookController extends AbstractController
     public function showProductHistory($id, BookRepository $bookRepository, BookHistoryRepository $bookHistoryRepository): Response
     {
         $book = $bookRepository->find($id);
+        
         $bookHistory = $bookHistoryRepository->findBy(['book'=>$book],['id'=>'DESC']);
 
         return $this->render('book/showBookHistory.html.twig', [

@@ -14,7 +14,7 @@ class BookHistory
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookHistories')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Book $book = null;
 
     #[ORM\Column]

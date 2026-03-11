@@ -26,6 +26,10 @@ final class UserManagerController extends AbstractController
     public function deleteUser($id, User $user, EntityManagerInterface $entMan, UserRepository $userRepository): Response
     {
         $user = $userRepository->find($id);
+        foreach ($user->getBorrow() as $borrow) {
+            $entMan->remove($borrow);
+        }
+
         $entMan->remove($user);
         $entMan->flush();
 
