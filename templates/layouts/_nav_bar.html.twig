@@ -13,20 +13,29 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_borrow_user_list') }}">Mes emprunts</a>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Profile
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ path('app_profile') }}">Info</a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_profile_edit') }}">Modifier</a></li>
+                </ul>
+            </li>
         {% endif %}
         {% if is_granted("ROLE_ADMIN") %}
             <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Admin
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ path('app_book_index') }}">Gestion des livres</a></li>
-                <li><a class="dropdown-item" href="{{ path('app_book_new') }}">Ajouter un livre</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ path('app_admin_borrow_list') }}">Liste des emprunts en cours</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ path('app_user_manager') }}">Gestion des utilisateurs</a></li>
-            </ul>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Admin
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ path('app_book_index') }}">Gestion des livres</a></li>
+                    <li><a class="dropdown-item" href="{{ path('app_book_new') }}">Ajouter un livre</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ path('app_admin_borrow_list') }}">Liste des emprunts en cours</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ path('app_user_manager') }}">Gestion des utilisateurs</a></li>
+                </ul>
             </li>
         {% endif %}
         {% if app.user %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body %}
+    <section class="container">
+        <h1>Modifier profile</h1>
+        {{ form_start(form) }}
+            <label for="">Prénom</label>
+            {{ form_widget(form.firstName, {attr:{'class': 'form form-control'}}) }}
+            <label for="">Nom</label>
+            {{ form_widget(form.lastName, {attr:{'class': 'form form-control'}}) }}
+            <label for="">Téléphone</label>
+            {{ form_widget(form.telephone, {attr:{'class': 'form form-control'}}) }}
+
+            <button type="submit" class="btn btn-dark mt-4">Sauvegarder</button>
+        {{ form_end(form) }}
+        <a href="{{ path('app_profile') }}" class="btn btn-outline-dark mt-2">Retour au profile</a>
+    </section>
+{% endblock %}

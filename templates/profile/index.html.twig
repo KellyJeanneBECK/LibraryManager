@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+
+<section class="container">
+    <h1>Votre profile</h1>
+    {% include 'layouts/_flash_messages.html.twig' %}
+    <table class="table">
+        <tr>
+            <th>Nom</th>
+            <td>{{ userProfile.firstName }} {{ userProfile.lastName|upper }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ userProfile.email }}</td>
+        </tr>
+        <tr>
+            <th>Téléphone</th>
+            <td>
+                {% if userProfile.telephone is empty %}
+                    <span>/</span>
+                {% else %}
+                    <span>{{ userProfile.telephone }}</span>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <a href="{{ path('app_profile_edit') }}" class="btn btn-dark">Modifier</a>
+</section>
+{% endblock %}
