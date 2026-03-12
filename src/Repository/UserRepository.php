@@ -66,6 +66,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->leftJoin('u.borrow', 'b', 'WITH', 'b.status = :status')
             ->setParameter('status', 'en_cours')
             ->groupBy('u.id')
+            ->orderBy('u.lastName')
             ->getQuery()
             ->getResult();
     }
